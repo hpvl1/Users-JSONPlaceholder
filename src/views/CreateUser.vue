@@ -1,5 +1,6 @@
 <script setup>
 import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
 const state = reactive({
   user: {
     name: null,
@@ -15,6 +16,8 @@ const state = reactive({
   },
 });
 
+const router = useRouter();
+
 async function createUser() {
   try {
     const response = await fetch('https://jsonplaceholder.typicode.com/users', {
@@ -24,6 +27,13 @@ async function createUser() {
       },
       body: JSON.stringify(state.user),
     });
+
+    if (response.status === 201) {
+      window.alert('Пользователь добавлен!');
+      router.push({
+        name: 'Users',
+      });
+    }
 
     if (!response.ok) {
       const message = `An error has occured: ${response.status} - ${response.statusText}`;
