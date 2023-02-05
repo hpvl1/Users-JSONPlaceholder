@@ -14,10 +14,11 @@ onMounted(async () => {
 
 async function getUsersData() {
   try {
-    const users = await fetch('https://jsonplaceholder.typicode.com/users').then((response) =>
-      response.json(),
-    );
+    const response = await fetch('https://jsonplaceholder.typicode.com/users');
+    const users = await response.json();
+
     state.userList = users;
+
     if (!response.ok) {
       const message = `An error has occured: ${response.status} - ${response.statusText}`;
       throw new Error(message);
@@ -75,9 +76,7 @@ function onClickCreateUser() {
             height="160"
             @click="onClickUser(user.id)"
           >
-            <v-card-title class="title pt-6">{{
-              user.name
-            }}</v-card-title>
+            <v-card-title class="title pt-6">{{ user.name }}</v-card-title>
             <v-card-subtitle class="username">@{{ user.username }}</v-card-subtitle>
             <v-card-text class="email mt-4">{{ user.email }}</v-card-text>
             <v-card-text class="phone">{{ user.phone }}</v-card-text>

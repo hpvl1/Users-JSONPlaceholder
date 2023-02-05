@@ -1,5 +1,10 @@
 <script setup>
 import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+
+import InputForm from '../components/UI/InputForm.vue';
+import LabelInputForm from '../components/UI/LabelInputForm.vue';
+
 const state = reactive({
   user: {
     name: null,
@@ -15,6 +20,8 @@ const state = reactive({
   },
 });
 
+const router = useRouter();
+
 async function createUser() {
   try {
     const response = await fetch('https://jsonplaceholder.typicode.com/users', {
@@ -24,6 +31,13 @@ async function createUser() {
       },
       body: JSON.stringify(state.user),
     });
+
+    if (response.status === 201) {
+      window.alert('Пользователь добавлен!');
+      router.push({
+        name: 'Users',
+      });
+    }
 
     if (!response.ok) {
       const message = `An error has occured: ${response.status} - ${response.statusText}`;
@@ -46,68 +60,48 @@ async function createUser() {
       <v-form class="user-form">
         <v-row>
           <v-col cols="12" md="4">
-            <label class="user-form__label">Name</label>
-            <v-text-field v-model="state.user.name" class="mt-3" outlined required> </v-text-field>
+            <LabelInputForm class="user-form__label">Name</LabelInputForm>
+            <InputForm type="text" class="mt-3" v-model.trim="state.user.name" />
           </v-col>
           <v-col cols="12" md="4">
-            <label class="user-form__label">Username</label>
-            <v-text-field
-              v-model="state.user.username"
-              class="mt-3"
-              outlined
-              required
-            ></v-text-field>
+            <LabelInputForm class="user-form__label">Username</LabelInputForm>
+            <InputForm type="text" class="mt-3" v-model.trim="state.user.username" />
           </v-col>
           <v-col cols="12" md="4">
-            <label class="user-form__label">Email</label>
-            <v-text-field v-model="state.user.email" class="mt-3" outlined required></v-text-field>
+            <LabelInputForm class="user-form__label">Email</LabelInputForm>
+            <InputForm type="email" class="mt-3" v-model.trim="state.user.email" />
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12" md="4">
-            <label class="user-form__label">Phone</label>
-            <v-text-field v-model="state.user.phone" class="mt-3" outlined required></v-text-field>
+            <LabelInputForm class="user-form__label">Phone</LabelInputForm>
+            <InputForm type="tel" class="mt-3" v-model.trim="state.user.phone" />
           </v-col>
           <v-col cols="12" md="4">
-            <label class="user-form__label">Website</label>
-            <v-text-field
-              v-model="state.user.website"
-              class="mt-3"
-              outlined
-              required
-            ></v-text-field>
+            <LabelInputForm class="user-form__label">Website</LabelInputForm>
+            <InputForm type="url" class="mt-3" v-model.trim="state.user.website" />
           </v-col>
           <v-col cols="12" md="4">
-            <label class="user-form__label">Company</label>
-            <v-text-field
-              v-model="state.user.company"
-              class="mt-3"
-              outlined
-              required
-            ></v-text-field>
+            <LabelInputForm class="user-form__label">Company</LabelInputForm>
+            <InputForm type="text" class="mt-3" v-model.trim="state.user.company" />
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12" md="4">
-            <label class="user-form__label">City</label>
-            <v-text-field v-model="state.user.city" class="mt-3" outlined required></v-text-field>
+            <LabelInputForm class="user-form__label">City</LabelInputForm>
+            <InputForm type="text" class="mt-3" v-model.trim="state.user.city" />
           </v-col>
           <v-col cols="12" md="4">
-            <label class="user-form__label">Street</label>
-            <v-text-field v-model="state.user.street" class="mt-3" outlined required></v-text-field>
+            <LabelInputForm class="user-form__label">Street</LabelInputForm>
+            <InputForm type="text" class="mt-3" v-model.trim="state.user.street" />
           </v-col>
           <v-col cols="12" md="2">
-            <label class="user-form__label">Suite</label>
-            <v-text-field v-model="state.user.suite" class="mt-3" outlined required></v-text-field>
+            <LabelInputForm class="user-form__label">Suite</LabelInputForm>
+            <InputForm type="text" class="mt-3" v-model.trim="state.user.suite" />
           </v-col>
           <v-col cols="12" md="2">
-            <label class="user-form__label">Zipcode</label>
-            <v-text-field
-              v-model="state.user.zipcode"
-              class="mt-3"
-              outlined
-              required
-            ></v-text-field>
+            <LabelInputForm class="user-form__label">Zipcode</LabelInputForm>
+            <InputForm type="text" class="mt-3" v-model.trim="state.user.zipcode" />
           </v-col>
         </v-row>
         <v-row>
@@ -121,10 +115,6 @@ async function createUser() {
 </template>
 
 <style scoped>
-.user-form__label {
-  font-size: 0.875rem;
-  font-weight: 400;
-}
 .v-btn {
   text-transform: none;
 }
